@@ -21,9 +21,16 @@ COLOR_GOLD_SOFT = (245, 210, 120)  # Vàng hoàng gia pastel nhạt
 COLOR_MINT_SOFT = (140, 230, 185)  # Xanh bạc hà pastel dịu mắt
 
 pygame.font.init()
-# Ép load font hệ thống hỗ trợ tiếng Việt có dấu
-FONT_LARGE = pygame.font.SysFont("Segoe UI", 22, bold=True)
-FONT_STATUS = pygame.font.SysFont("Segoe UI", 16, bold=True)
-FONT_MED = pygame.font.SysFont("Segoe UI", 14, bold=True)
-FONT_SMALL = pygame.font.SysFont("Segoe UI", 12, bold=True)
-FONT_MINI = pygame.font.SysFont("Segoe UI", 12, bold=True)
+# Font hỗ trợ tiếng Việt có dấu - dùng Tahoma hoặc font mặc định
+try:
+    FONT_LARGE = pygame.font.SysFont("Tahoma", 22, bold=True)
+    FONT_STATUS = pygame.font.SysFont("Tahoma", 16, bold=True)
+    FONT_MED = pygame.font.SysFont("Tahoma", 14, bold=True)
+    FONT_SMALL = pygame.font.SysFont("Tahoma", 12, bold=True)
+    FONT_MINI = pygame.font.SysFont("Tahoma", 11, bold=False)
+except:
+    FONT_LARGE = pygame.font.Font(None, 22)
+    FONT_STATUS = pygame.font.Font(None, 16)
+    FONT_MED = pygame.font.Font(None, 14)
+    FONT_SMALL = pygame.font.Font(None, 12)
+    FONT_MINI = pygame.font.Font(None, 11)

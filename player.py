@@ -7,7 +7,7 @@ class Player:
     def __init__(self):
         self.x = 525
         self.y = 480
-        self.speed = 6
+        self.speed = 8
         self.size = 110
 
         current_dir = os.path.dirname(os.path.abspath(__file__))

@@ -7,6 +7,7 @@ from economy import EconomyState
 from policy import PolicyManager
 from events import EventEngine
 from ui import UIEngine
+from guide import GameGuide
 
 class GameManager:
     def __init__(self):
@@ -14,11 +15,11 @@ class GameManager:
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
         pygame.display.set_caption("SimSociety 2D: He Thong Mo Phong Bien Chung 4.5")
         self.clock = pygame.time.Clock()
-        self.is_fullscreen = False
         self.player = Player()
         self.eco = EconomyState()
         self.policy_box = PolicyManager()
         self.event_system = EventEngine()
+        self.guide = GameGuide()
 
         # Căn chỉnh lại tọa độ vùng bấm nút Qua Năm để vừa khít với con đường trung tâm
         self.zone_next_turn = pygame.Rect(412, 570, 220, 50)
@@ -52,16 +53,27 @@ class GameManager:
             if event.type == pygame.QUIT:
                 self.running = False
             
-            # --- BẮT SỰ KIỆN F11 CHUYỂN ĐỔI MÀN HÌNH ---
+            # --- BẮT SỰ KIỆN KEYDOWN ---
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_F11:
-                    self.is_fullscreen = not self.is_fullscreen
-                    if self.is_fullscreen:
-                        self.screen = pygame.display.set_mode((WIDTH, HEIGHT), pygame.FULLSCREEN | pygame.SCALED)
-                    else:
-                        self.screen = pygame.display.set_mode((WIDTH, HEIGHT))  
+                # BẮT SỰ KIỆN G MỞ/ĐÓNG GUIDE
+                if event.key == pygame.K_g:
+                    self.guide.toggle_visibility()
+                    pygame.time.wait(200)
+            
+            # --- BẮT SỰ KIỆN CLICK CHUỘT VÀO NÚT GUIDE ---
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if event.button == 1:  # Click chuột trái
+                    mouse_pos = pygame.mouse.get_pos()
+                    if UIEngine.guide_button_rect.collidepoint(mouse_pos):
+                        self.guide.toggle_visibility()
+                        pygame.time.wait(200)
         
         keys = pygame.key.get_pressed()
+        
+        # Nếu Guide đang mở, xử lý input cho Guide
+        if self.guide.is_visible:
+            self.guide.handle_input(keys)
+            return
         
         # Nếu đã End Game, chỉ bắt duy nhất sự kiện bấm nút R để Reset trò chơi
         if self.game_over_msg:
@@ -170,8 +182,17 @@ class GameManager:
         self.screen.blit(title_infra, (infra_rect.x + infra_rect.width//2 - title_infra.get_width()//2, infra_rect.y + 15))
         
         infra_img_rect = pygame.Rect(infra_rect.x + 15, infra_rect.y + 50, infra_rect.width - 30, 180)
-        pygame.draw.rect(self.screen, COLOR_TEXT_DARK, infra_img_rect, 2, border_radius=8) 
-        blit_rounded_image(self.screen, r"C:\Users\Khang\OneDrive\Desktop\GAME_MLN\Fábrica_Industrial_Gratuita_Com_Chaminé_PNG___Industrial__Fábrica__Fumaça_PNG_Imagem_para_download_gratuito-removebg-preview.png", infra_img_rect, 8)  
+        pygame.draw.rect(self.screen, COLOR_TEXT_DARK, infra_img_rect, 2, border_radius=8)
+        
+        # Chọn ảnh dựa trên cấp độ công nghệ
+        if self.eco.tech_level == 1:
+            infra_image = r"C:\Users\Khang\OneDrive\Desktop\GAME_MLN\download.webp"
+        elif self.eco.tech_level == 2:
+            infra_image = r"C:\Users\Khang\OneDrive\Desktop\GAME_MLN\Fábrica_Industrial_Gratuita_Com_Chaminé_PNG___Industrial__Fábrica__Fumaça_PNG_Imagem_para_download_gratuito-removebg-preview.png"
+        else:  # tech_level == 3
+            infra_image = r"C:\Users\Khang\OneDrive\Desktop\GAME_MLN\LA IA EN UNIVERSO.jpg"
+        
+        blit_rounded_image(self.screen, infra_image, infra_img_rect, 8)  
         
         sub_infra = FONT_MED.render(f"Cơ sở hạ tầng (Cấp {self.eco.tech_level})", True, COLOR_TEXT_DARK)
         self.screen.blit(sub_infra, (infra_rect.x + infra_rect.width//2 - sub_infra.get_width()//2, infra_rect.y + 242))
@@ -232,13 +253,12 @@ class GameManager:
         # HUD vĩ mô trên đỉnh màn hình
         UIEngine.draw_hud(self.screen, self.eco)
         
+        # Vẽ nút Guide
+        UIEngine.draw_guide_button(self.screen)
+        
         # Các nhãn chữ thông tin góc trái đỉnh
         lbl_year = FONT_LARGE.render(f"NĂM THỨ: {self.eco.turn}", True, (255, 255, 255))
         self.screen.blit(lbl_year, (40, 40)) 
-        
-        mode_text = "Toàn màn hình (F11)" if self.is_fullscreen else "Chế độ Cửa sổ (F11)"
-        lbl_mode = FONT_MINI.render(f"Chế độ: {mode_text}", True, (160, 160, 165))
-        self.screen.blit(lbl_mode, (40, 75)) 
         
         if self.event_system.current_event:
             lbl_ev = FONT_STATUS.render(f"BIẾN CỐ: {self.event_system.current_event['name']}", True, COLOR_RED)
@@ -247,24 +267,29 @@ class GameManager:
         # ----------------------------------------------------------
         # PANEL TRÁI: BẢN TIN THỊ TRƯỜNG VĨ MÔ (Dưới Thẻ Cơ sở hạ tầng)
         # ----------------------------------------------------------
-        log_rect = pygame.Rect(40, 580, 340, 80)
+        log_rect = pygame.Rect(40, 575, 340, 105)
         pygame.draw.rect(self.screen, (20, 20, 22), log_rect, border_radius=8)
         pygame.draw.rect(self.screen, (70, 70, 75), log_rect, 2, border_radius=8) 
         
         lbl_log_title = FONT_MED.render("[ BẢN TIN THỊ TRƯỜNG VĨ MÔ ]", True, COLOR_GOLD)
-        self.screen.blit(lbl_log_title, (log_rect.x + 15, log_rect.y + 10))
+        self.screen.blit(lbl_log_title, (log_rect.x + 15, log_rect.y + 8))
         
-        # Trích xuất 2 dòng log mới nhất để hiển thị vừa vặn trong khung
-        for i, log_str in enumerate(self.eco.logs[-2:]):
-            lbl_log = FONT_SMALL.render(log_str, True, COLOR_TEXT_LIGHT)
-            self.screen.blit(lbl_log, (log_rect.x + 15, log_rect.y + 35 + i * 20))
+        # Xử lý wrap text cho log
+        log_y_offset = log_rect.y + 30
+        for log_str in self.eco.logs[-3:]:
+            wrapped_lines = UIEngine.wrap_text(log_str, FONT_SMALL, 310)
+            for line in wrapped_lines[:1]:  # Chỉ lấy dòng đầu tiên của mỗi log
+                if log_y_offset + 15 < log_rect.y + log_rect.height:
+                    lbl_log = FONT_SMALL.render(line, True, COLOR_TEXT_LIGHT)
+                    self.screen.blit(lbl_log, (log_rect.x + 15, log_y_offset))
+                    log_y_offset += 18
 
 
         # ----------------------------------------------------------
         # PANEL PHẢI: CHỈ THỊ / THAO TÁC (Dưới Thẻ Thượng tầng)
         # ----------------------------------------------------------
         if self.current_hint:
-            hint_rect = pygame.Rect(670, 580, 340, 80)
+            hint_rect = pygame.Rect(670, 575, 340, 105)
             pygame.draw.rect(self.screen, (20, 20, 22), hint_rect, border_radius=8)
             
             # Đổi màu viền dựa trên tính chất cảnh báo: Nhiệm vụ (Vàng) vs Thao tác (Xanh Mint)
@@ -273,31 +298,18 @@ class GameManager:
             pygame.draw.rect(self.screen, border_color, hint_rect, 2, border_radius=8)
             
             lbl_hint_title = FONT_MED.render("[ CHỈ THỊ CHIẾN LƯỢC ]" if is_task else "[ HƯỚNG DẪN THAO TÁC ]", True, border_color)
-            self.screen.blit(lbl_hint_title, (hint_rect.x + 15, hint_rect.y + 10))
+            self.screen.blit(lbl_hint_title, (hint_rect.x + 15, hint_rect.y + 8))
             
             # Xóa chữ tiền tố cũ để tiết kiệm không gian
             raw_text = self.current_hint.replace("NHIỆM VỤ: ", "").replace("THAO TÁC: ", "")
-            lines = []
             
-            # Thuật toán ngắt dòng thông minh (Word-Wrap)
-            if "|" in raw_text:
-                lines = [line.strip() for line in raw_text.split("|")]
-            else:
-                words = raw_text.split(' ')
-                current_line = ""
-                for word in words:
-                    if FONT_SMALL.size(current_line + word)[0] < 310: # 310 là chiều rộng tối đa an toàn của text
-                        current_line += word + " "
-                    else:
-                        lines.append(current_line)
-                        current_line = word + " "
-                if current_line:
-                    lines.append(current_line)
+            # Sử dụng hàm wrap_text từ UIEngine
+            lines = UIEngine.wrap_text(raw_text, FONT_SMALL, 310)
             
-            # In ra các dòng đã được ngắt (Tối đa hiển thị 2 dòng)
-            for i, line_text in enumerate(lines[:2]):
-                lbl_hint_text = FONT_SMALL.render(line_text.strip(), True, COLOR_TEXT_LIGHT)
-                self.screen.blit(lbl_hint_text, (hint_rect.x + 15, hint_rect.y + 35 + i * 20))
+            # In ra các dòng đã được ngắt (Tối đa hiển thị 3 dòng)
+            for i, line_text in enumerate(lines[:3]):
+                lbl_hint_text = FONT_SMALL.render(line_text, True, COLOR_TEXT_LIGHT)
+                self.screen.blit(lbl_hint_text, (hint_rect.x + 15, hint_rect.y + 30 + i * 18))
         # ==========================================================
         # 4. LỚP NHÂN VẬT THỊ TRƯỞNG TRÊN CÙNG TUYỆT ĐỐI (LAYER 3)
         # ==========================================================
@@ -314,16 +326,41 @@ class GameManager:
             overlay.fill((15, 15, 18))
             self.screen.blit(overlay, (0, 0))
             is_fail = "4" in self.game_over_msg or "CRISIS" in self.game_over_msg
-            title_surf = FONT_LARGE.render(self.game_over_msg, True, COLOR_RED if is_fail else COLOR_MINT)
-            self.screen.blit(title_surf, (WIDTH//2 - title_surf.get_width()//2, 80))
+            
+            # Wrap text khi quá dài
+            ending_text = self.game_over_msg
+            if len(ending_text) > 60:
+                # Tìm vị trí tách dòng hợp lý
+                mid = len(ending_text) // 2
+                for i in range(mid, mid + 20):
+                    if ending_text[i] == ' ':
+                        line1 = ending_text[:i]
+                        line2 = ending_text[i+1:]
+                        break
+                else:
+                    line1 = ending_text[:mid]
+                    line2 = ending_text[mid:]
+                
+                # Vẽ 2 dòng với font nhỏ hơn
+                title_surf1 = FONT_STATUS.render(line1, True, COLOR_RED if is_fail else COLOR_MINT)
+                title_surf2 = FONT_STATUS.render(line2, True, COLOR_RED if is_fail else COLOR_MINT)
+                self.screen.blit(title_surf1, (WIDTH//2 - title_surf1.get_width()//2, 60))
+                self.screen.blit(title_surf2, (WIDTH//2 - title_surf2.get_width()//2, 90))
+            else:
+                title_surf = FONT_STATUS.render(ending_text, True, COLOR_RED if is_fail else COLOR_MINT)
+                self.screen.blit(title_surf, (WIDTH//2 - title_surf.get_width()//2, 75))
+            
             lbl_timeline_title = FONT_STATUS.render("[ BIÊN NIÊN SỬ TRIỀU ĐẠI QUẢN TRỊ CỦA BẠN ]", True, COLOR_GOLD)
-            self.screen.blit(lbl_timeline_title, (100, 160))
-            for idx, history_line in enumerate(self.eco.history_timeline[-10:]): 
+            self.screen.blit(lbl_timeline_title, (100, 140))
+            for idx, history_line in enumerate(self.eco.history_timeline[-9:]): 
                 hist_surf = FONT_MED.render(f"• {history_line}", True, COLOR_TEXT_LIGHT)
-                self.screen.blit(hist_surf, (120, 200 + idx * 30))
+                self.screen.blit(hist_surf, (120, 175 + idx * 28))
             restart_surf = FONT_STATUS.render("Nhấn phím [ R ] để khởi động lại guồng quay của bánh xe Lịch sử", True, COLOR_GOLD)
             self.screen.blit(restart_surf, restart_surf.get_rect(center=(WIDTH // 2, 560)))
 
+        # Vẽ Guide nếu đang hiển thị (Luôn vẽ ở trên cùng để không bị che)
+        self.guide.draw(self.screen)
+        
         pygame.display.flip()
 
     def run(self):
