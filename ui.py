@@ -27,7 +27,9 @@ class UIEngine:
     
     @staticmethod
     def draw_progress_bar(screen, x, y, width, height, value, max_value, label_text, bar_color):
-        lbl = FONT_SMALL.render(f"{label_text}: {value}%", True, COLOR_TEXT_DARK if y > 120 else (220, 220, 220))
+        percentage = int((value / max_value) * 100) if max_value > 0 else 0
+        percentage = max(0, min(100, percentage))
+        lbl = FONT_SMALL.render(f"{label_text}: {percentage}%", True, COLOR_TEXT_DARK if y > 120 else (220, 220, 220))
         screen.blit(lbl, (x, y - 18))
         
         pygame.draw.rect(screen, COLOR_ROAD, (x, y, width, height), border_radius=3)
