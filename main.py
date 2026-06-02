@@ -3,6 +3,7 @@ import sys
 import random
 import math
 import os
+import asyncio
 from config import *
 from player import Player
 from economy import EconomyState
@@ -765,15 +766,19 @@ class GameManager:
         self.guide.draw(self.screen)
         pygame.display.flip()
 
-    def run(self):
+    async def run(self):
         while self.running:
             self.handle_input()
             self.update()
             self.render()
             self.clock.tick(FPS)
+            await asyncio.sleep(0)
         pygame.quit()
         sys.exit()
 
-if __name__ == "__main__":
+async def main():
     game = GameManager()
-    game.run()
+    await game.run()
+
+if __name__ == "__main__":
+    asyncio.run(main())
