@@ -29,14 +29,27 @@ COLOR_CH5 = (0, 180, 220)      # Xanh neon tươi sáng - Thế giới ngày mai
 
 
 pygame.font.init()
-# Font hỗ trợ tiếng Việt có dấu - dùng Tahoma hoặc font mặc định
+FONT_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "arial.ttf")
+
 try:
-    FONT_LARGE = pygame.font.SysFont("Tahoma", 22, bold=True)
-    FONT_STATUS = pygame.font.SysFont("Tahoma", 16, bold=True)
-    FONT_MED = pygame.font.SysFont("Tahoma", 14, bold=True)
-    FONT_SMALL = pygame.font.SysFont("Tahoma", 12, bold=True)
-    FONT_MINI = pygame.font.SysFont("Tahoma", 11, bold=False)
-except:
+    if os.path.exists(FONT_PATH):
+        FONT_LARGE = pygame.font.Font(FONT_PATH, 22)
+        FONT_LARGE.set_bold(True)
+        FONT_STATUS = pygame.font.Font(FONT_PATH, 16)
+        FONT_STATUS.set_bold(True)
+        FONT_MED = pygame.font.Font(FONT_PATH, 14)
+        FONT_MED.set_bold(True)
+        FONT_SMALL = pygame.font.Font(FONT_PATH, 12)
+        FONT_SMALL.set_bold(True)
+        FONT_MINI = pygame.font.Font(FONT_PATH, 11)
+    else:
+        # Fallback dùng System Font nếu chạy trên máy tính mà thiếu file
+        FONT_LARGE = pygame.font.SysFont("Tahoma", 22, bold=True)
+        FONT_STATUS = pygame.font.SysFont("Tahoma", 16, bold=True)
+        FONT_MED = pygame.font.SysFont("Tahoma", 14, bold=True)
+        FONT_SMALL = pygame.font.SysFont("Tahoma", 12, bold=True)
+        FONT_MINI = pygame.font.SysFont("Tahoma", 11, bold=False)
+except Exception:
     FONT_LARGE = pygame.font.Font(None, 22)
     FONT_STATUS = pygame.font.Font(None, 16)
     FONT_MED = pygame.font.Font(None, 14)
