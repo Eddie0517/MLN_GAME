@@ -6,139 +6,119 @@ from config import (
 )
 
 class GameGuide:
-    """Hệ thống hướng dẫn trò chơi với nội dung chi tiết"""
+    """Hệ thống hướng dẫn trò chơi Kỷ Nguyên Tiến Hóa"""
     
-    # Nội dung guide được chia thành các tab
     GUIDE_CONTENT = {
         "Cách chơi": [
             "MỤC ĐÍCH TRÒ CHƠI",
-            "Điều hành đất nước thông qua các quyết định chính sách",
-            "và nâng cấp công nghệ để đạt tới Kỷ nguyên Utopia.",
+            "Đưa bầy người nguyên sơ vượt qua các giai đoạn tiến hóa lịch sử,",
+            "cải tiến công cụ lao động để xây dựng xã hội thịnh vượng vĩ đại.",
             "",
-            "CÁC GIAI ĐOẠN PHÁT TRIỂN",
-            "• Giai đoạn 1: Nông nghiệp (Công nghiệp hóa)",
-            "  Tích lũy 60 Vàng → Nâng cấp tại [CƠ SỞ HẠ TẦNG]",
-            "",
-            "• Giai đoạn 2: Công nghiệp (Kỷ nguyên AI)",
-            "  Tích lũy 120 Vàng → Nâng cấp tại [CƠ SỞ HẠ TẦNG]",
-            "",
-            "• Giai đoạn 3: Kỷ nguyên AI (Utopia)",
-            "  Đạt 250 Vàng + Lòng dân cân bằng → Chiến thắng!",
+            "5 HÌNH THÁI KINH TẾ - XÃ HỘI",
+            "• Chương 1: Công xã Nguyên thủy",
+            "  Săn bắt - hái lượm, duy trì ngọn lửa sưởi ấm.",
+            "• Chương 2: Chiếm hữu Nô lệ",
+            "  Sử dụng sức lao động của nô lệ xây dựng kỳ quan đền đài.",
+            "• Chương 3: Phong kiến",
+            "  Thu thuế điền sản nông nghiệp, mở rộng giao thương hàng hải.",
+            "• Chương 4: Xã hội Chủ nghĩa",
+            "  Công hữu hóa nhà máy, chăm lo phúc lợi, phát triển công bằng.",
+            "• Chương 5: Kỷ nguyên Tri thức & Tự động hóa",
+            "  Robot gánh vác việc chân tay, thám hiểm thiên hà xa xôi.",
         ],
         "Điều khiển": [
-            "CÁC PHÍM ĐIỀU KHIỂN",
-            "• PHÍM MŨI TÊN: Di chuyển nhân vật",
-            "• SPACE: Tương tác tại vị trí hiện tại",
-            "  - Ở [CƠ SỞ HẠ TẦNG]: Nâng cấp công nghệ",
-            "  - Ở [LUẬT PHÁP]: Tương tác với chính sách",
-            "  - Ở [QUA NĂM]: Bước sang năm tiếp theo",
+            "CÁC PHÍM TƯƠNG TÁC CHÍNH",
+            "• PHÍM MŨI TÊN hoặc WASD: Di chuyển nhân vật Thị trưởng.",
             "",
-            "• PHÍM 1: Ban hành Thuế AI (tại ô Thượng tầng)",
-            "• PHÍM 2: Ban hành Luật Phúc Lợi (tại ô Thượng tầng)",
-            "• R: Khởi động lại game (khi game over)",
-            "• G: Mở/Đóng guide (hướng dẫn này)",
+            "• ĐỨNG Ở GIỮA ĐƯỜNG (Khu khai thác) + Nhấn [SPACE]:",
+            "  Trực tiếp lao động để sản xuất tài nguyên (Lương thực, Quặng, Vàng, Tri thức...)",
+            "",
+            "• ĐỨNG Ở BÊN TRÁI (Cơ sở hạ tầng) + Nhấn [SPACE]:",
+            "  Nâng cấp công cụ cải biến Lực lượng sản xuất (Tiến lên đời tiếp theo).",
+            "",
+            "• ĐỨNG Ở BÊN PHẢI (Kiến trúc Thượng tầng) + Nhấn [1] hoặc [2]:",
+            "  Ban hành sắc lệnh chính trị (Quan hệ sản xuất).",
+            "",
+            "• ĐỨNG Ở GIỮA PHÍA DƯỚI (Qua năm) + Nhấn [SPACE]:",
+            "  Bước sang năm mới, nhận sản lượng tự động và đối mặt Biến cố.",
+            "",
+            "• KHI XẢY RA BIẾN CỐ LỰA CHỌN:",
+            "  Nhấn phím [ A ] hoặc [ B ] trên bàn phím để chọn quyết định.",
+            "",
+            "• PHÍM KHÁC:",
+            "  - G: Mở/Đóng Hướng dẫn này | R: Khởi động lại game khi kết thúc.",
         ],
         "Tài nguyên": [
-            "CÁC TÀI NGUYÊN CHÍNH",
-            "1. VÀNG (Gold):",
-            "   - Tài nguyên chính của quốc gia",
-            "   - Dùng để nâng cấp công nghệ",
-            "   - Nhận thêm mỗi năm từ năng suất",
+            "TÀI NGUYÊN ĐỘNG THEO CHƯƠNG",
+            "• Chương 1: Lương thực (Đạt 200 để chuyển đời) & Lửa sưởi ấm.",
+            "  Chú ý: Nếu lửa tắt (0%), năng suất săn bắt tự động giảm mạnh.",
             "",
-            "2. LÒNG DÂN CÁC PHE PHÁI:",
-            "   - Công nhân (Xanh): Ủng hộ các chính sách công nhân",
-            "   - Giới chủ (Đỏ): Ủng hộ các chính sách kinh tế",
-            "   - Cần giữ lòng dân cân bằng để tránh sụp đổ",
+            "• Chương 2: Lương thực, Quặng (Ore - cần 100), Vàng (cần 150), Nô lệ.",
+            "  Chú ý: Nô lệ sẽ ăn lương thực. Nếu thiếu ăn, họ phản kháng dữ dội.",
             "",
-            "3. NĂNG SUẤT:",
-            "   - Lượng Vàng nhận được mỗi năm",
-            "   - Tăng khi nâng cấp công nghệ",
-            "   - Phụ thuộc vào hệ tư tưởng hiện tại",
+            "• Chương 3: Lương thực, Vàng ngân quỹ (cần 800), Thuế suất (%).",
+            "  Chú ý: Thuế thu được tính theo tỷ lệ thu hoạch lúa. Thuế cao dân oán hận.",
+            "",
+            "• Chương 4: Quỹ Phúc Lợi (Cần 1M đ), Bình đẳng (Cần 90%), Thức ăn.",
+            "  Chú ý: Quỹ Phúc Lợi có thể nâng cấp cấp số nhân nhờ công nghiệp xanh.",
+            "",
+            "• Chương 5: Năng lượng sạch, Tri thức, Chỉ số Văn minh (Đạt 100% để THẮNG).",
         ],
-        "Chính sách": [
-            "CÁC CHÍNH SÁCH KHUYẾT THÊ",
+        "Cải cách Đời": [
+            "NÂNG CẤP LỰC LƯỢNG SẢN XUẤT",
+            "Để chuyển sang thời kỳ tiếp theo, đứng vào ô Trái nhấn SPACE:",
             "",
-            "1. THUẾ AI (Phím 1):",
-            "   - Yêu cầu: Ở giai đoạn Kỷ nguyên AI trở lên",
-            "   - Tác dụng: +60 Vàng ngay lập tức",
-            "   - Phản ứng: Giới chủ tăng 5%, Công nhân giảm 5%",
-            "   - Chú ý: Không được dùng ở giai đoạn Nông nghiệp!",
+            "• LÊN ĐỜI II (Chiếm hữu Nô lệ):",
+            "  Yêu cầu: Lương thực tích lũy >= 200.",
             "",
-            "2. LUẬT PHÚC LỢI CÔNG NHÂN (Phím 2):",
-            "   - Tác dụng: Công nhân +8%, năng suất -5",
-            "   - Hiệu quả: Ổn định lòng dân công nhân",
-            "   - Chi phí: Giảm năng suất mỗi năm",
-            "   - Khi nào dùng: Khi lòng dân công nhân quá thấp",
+            "• LÊN ĐỜI III (Phong kiến):",
+            "  Yêu cầu: Quặng đồng/sắt >= 100 và Vàng >= 150.",
             "",
-            "3. NÂNG CẤP CƠ SỞ HẠ TẦNG (SPACE):",
-            "   - Yêu cầu: Đủ Vàng theo giai đoạn",
-            "   - Tác dụng: Nâng công nghệ lên cấp tiếp theo",
-            "   - Tăng năng suất hàng năm",
+            "• LÊN ĐỜI IV (Xã hội Chủ nghĩa):",
+            "  Yêu cầu: Vàng trong ngân khố địa chủ >= 800.",
+            "",
+            "• LÊN ĐỜI V (Tương lai):",
+            "  Đạt tự động khi: Quỹ Phúc Lợi >= 1,000,000 và Bình đẳng >= 90%.",
+            "",
+            "• CHIẾN THẮNG CUỐI CÙNG:",
+            "  Đưa Chỉ số Văn minh tại Chương 5 đạt mốc 100%.",
         ],
-        "Hệ tư tưởng": [
-            "CÁC HỆ TƯ TƯỞNG VÀ TÍNH CHẤT",
+        "Sắc lệnh chính": [
+            "SÁCH LƯỢC QUAN HỆ SẢN XUẤT",
+            "Đứng tại ô Phải bấm phím 1 hoặc 2 để ban hành lệnh tương ứng:",
             "",
-            "1. CHỦ NGHĨA TƯƠI MỚI (Early):",
-            "   - Năng suất: Bình thường",
-            "   - Lòng dân: Cân bằng",
-            "",
-            "2. TƯ BẢN CÔNG NGHIỆP:",
-            "   - Năng suất: Cao (Giới chủ hưởng lợi)",
-            "   - Lòng dân: Giới chủ ↑, Công nhân ↓",
-            "",
-            "3. XÃ HỘI CHỦ NGHĨA KHOA HỌC:"
-            "   - Năng suất: Bình thường (Công nhân hưởng lợi)",
-            "   - Lòng dân: Công nhân ↑, Giới chủ ↓",
-            "",
-            "4. CHỦ NGHĨA ĐỘC TÀI AI (Technocracy):",
-            "   - Năng suất: Rất cao (Máy tính quyết định)",
-            "   - Lòng dân: Cả hai phe phái giảm",
-            "",
-            "5. UTOPIA TƯ TƯ TƯỞNG:",
-            "   - Năng suất: Cực cao",
-            "   - Lòng dân: Cả hai phe phái hài lòng",
+            "• ĐỜI I: Tiếp củi giữ Lửa (Tốn food) / Rèn gậy săn bắn (Năng suất +5).",
+            "• ĐỜI II: Cưỡng bức lao động (Tăng thu, hại nô lệ) / Phát cháo cơm (Giảm phản kháng).",
+            "• ĐỜI III: Tăng thuế suất (Thu nhiều vàng, oán hận tăng) / Đắp đê ngăn lũ.",
+            "• ĐỜI IV: Cấp quỹ dân sinh (Tăng bình đẳng) / Thi đua sản xuất (Tăng năng suất).",
+            "• ĐỜI V: Hợp nhất mạng lưới (Tăng năng lượng) / Phóng tàu vũ trụ (Văn minh +20%).",
         ],
-        "Kết thúc trò chơi": [
-            "4 KẾT THÚC CHÍNH",
+        "Kết thúc game": [
+            "ĐIỀU KIỆN KẾT THÚC VÀ KẾT QUẢ",
             "",
-            "1. ENDING 1: KỶ NGUYÊN HOÀNG KIM (Utopia AI)",
-            "   Điều kiện: Tech Lv3 + Gold ≥250 + Lòng dân ≥80%",
-            "   Kết quả: CHIẾN THẮNG - Xã hội hoàn hảo",
+            "1. THẮNG LỢI HOÀN TOÀN: VICTORY",
+            "   Đạt 100% Chỉ số Văn minh tại Chương 5.",
+            "   Xã hội tự động hóa Solarpunk rực rỡ vươn tới các vì sao.",
             "",
-            "2. ENDING 2: ĐỘC TÀI CÔNG NGHỆ (Cyberpunk)",
-            "   Điều kiện: Tech Lv3 + Hệ tư tưởng Technocracy",
-            "   Kết quả: THUA - Người giàu kiểm soát tất cả",
+            "2. THẤT BẠI NẠN ĐÓI (Chương 1):",
+            "   Để Lương thực rơi về mốc <= 0. Bộ lạc tan rã.",
             "",
-            "3. ENDING 3: CÁCH MẠNG LAO ĐỘNG",
-            "   Điều kiện: Sức căng cách mạng ≥30",
-            "   Kết quả: THUA - Công nhân lật đổ chế độ",
-            "",
-            "4. ENDING 4: SỤP ĐỔ TOÀN DIỆN",
-            "   Điều kiện: Lòng dân <20% hoặc Gold < -40",
-            "   Kết quả: THUA - Nhà nước tan rã",
+            "3. THẤT BẠI NỔI LOẠN (Chương 2, 3, 4):",
+            "   Để Chỉ số Phản kháng / Bất ổn xã hội chạm ngưỡng 100%.",
+            "   Dân chúng nổi dậy lật đổ nhà cầm quyền.",
         ],
-        "Mẹo chơi": [
-            "CÁC MẸO VÀ CHIẾN LƯỢC",
+        "Mẹo hay": [
+            "CHIẾN LƯỢC TIẾN HÓA THÀNH CÔNG",
+            "• Hãy tích cực đứng ở khu vực khai thác ở giữa và nhấn SPACE.",
+            "  Lao động trực tiếp sẽ sinh ra tài nguyên nhanh hơn đợi qua năm.",
             "",
-            "1. GIAI ĐOẠN SỚM:",
-            "   • Cân bằng lòng dân các phe phái",
-            "   • Tích lũy Vàng ổn định, không vội nâng cấp",
-            "   • Tránh ban hành quá nhiều chính sách mạnh",
+            "• Đừng quá nôn nóng lên đời mà bỏ quên lòng dân.",
+            "  Hãy dùng các sắc lệnh như Phát cơm (Đời 2), Đắp đê (Đời 3),",
+            "  Cấp quỹ (Đời 4) để kéo lòng dân trở lại mức an toàn.",
             "",
-            "2. GIAI ĐOẠN GIỮA (Công nghiệp):",
-            "   • Dùng Luật Phúc Lợi khi lòng dân công nhân thấp",
-            "   • Tiếp tục tích lũy Vàng",
-            "   • Chuẩn bị cho giai đoạn AI",
-            "",
-            "3. GIAI ĐOẠN CUỐI (AI):",
-            "   • Bật Thuế AI để tăng Vàng nhanh",
-            "   • Dùng Phúc Lợi cân bằng lòng dân",
-            "   • Đạt đủ Vàng và lòng dân để chiến thắng",
-            "",
-            "4. TRÁNH CÁC SAI LẦM:",
-            "   Không dùng Thuế AI ở giai đoạn sớm",
-            "   Không để lòng dân một phe phái quá thấp",
-            "   Không quên cân bằng các chỉ số",
+            "• Ở Đời 4, việc nâng cấp công cụ Xanh, Điện toán đám mây,",
+            "  và Robot AI sẽ nhân sản lượng phúc lợi từ +2,000 lên +500,000 mỗi năm.",
+            "  Hãy ưu tiên nâng cấp hạ tầng trước khi trích quỹ cấp dân sinh.",
         ],
     }
     
@@ -148,44 +128,39 @@ class GameGuide:
         self.tab_names = list(self.GUIDE_CONTENT.keys())
         self.guide_rect = pygame.Rect(100, 100, 850, 480)
         self.scroll_offset = 0
-        self.max_scroll = 0
         
     def toggle_visibility(self):
-        """Bật/Tắt hiển thị guide"""
         self.is_visible = not self.is_visible
         self.scroll_offset = 0
         
     def next_tab(self):
-        """Sang tab tiếp theo"""
         self.current_tab = (self.current_tab + 1) % len(self.tab_names)
         self.scroll_offset = 0
         
     def prev_tab(self):
-        """Quay lại tab trước"""
         self.current_tab = (self.current_tab - 1) % len(self.tab_names)
         self.scroll_offset = 0
     
     def draw(self, screen):
-        """Vẽ guide lên màn hình"""
         if not self.is_visible:
             return
         
-        # Vẽ nền mờ
+        # Vẽ nền tối mờ
         overlay = pygame.Surface((screen.get_width(), screen.get_height()))
-        overlay.set_alpha(200)
+        overlay.set_alpha(220)
         overlay.fill((0, 0, 0))
         screen.blit(overlay, (0, 0))
         
-        # Vẽ hộp guide
+        # Vẽ hộp chứa guide
         pygame.draw.rect(screen, COLOR_CARD_POLICY, self.guide_rect, border_radius=10)
         pygame.draw.rect(screen, COLOR_GOLD, self.guide_rect, 3, border_radius=10)
         
-        # Vẽ tiêu đề
-        title = FONT_LARGE.render(f" HƯỚNG DẪN CHƠI ", True, COLOR_TEXT_DARK)
+        # Tiêu đề
+        title = FONT_LARGE.render(" CẨM NANG TIẾN HÓA LỊCH SỬ ", True, COLOR_TEXT_DARK)
         title_rect = title.get_rect(center=(self.guide_rect.centerx, self.guide_rect.y + 20))
         screen.blit(title, title_rect)
         
-        # Vẽ các tab
+        # Vẽ các thẻ tab
         tab_y = self.guide_rect.y + 45
         tab_height = 25
         tab_width = self.guide_rect.width // len(self.tab_names)
@@ -194,7 +169,6 @@ class GameGuide:
             tab_x = self.guide_rect.x + (i * tab_width)
             tab_rect = pygame.Rect(tab_x, tab_y, tab_width, tab_height)
             
-            # Highlight tab hiện tại
             if i == self.current_tab:
                 pygame.draw.rect(screen, COLOR_GOLD, tab_rect)
                 text_color = COLOR_TEXT_DARK
@@ -206,57 +180,43 @@ class GameGuide:
             tab_text_rect = tab_text.get_rect(center=tab_rect.center)
             screen.blit(tab_text, tab_text_rect)
         
-        # Vẽ nội dung guide
+        # Vùng chứa nội dung
         content_y = self.guide_rect.y + 80
         content_rect = pygame.Rect(
-            self.guide_rect.x + 10,
+            self.guide_rect.x + 20,
             content_y,
-            self.guide_rect.width - 20,
-            self.guide_rect.height - 110
+            self.guide_rect.width - 40,
+            self.guide_rect.height - 130
         )
         
-        # Lấy nội dung tab hiện tại
         current_content = self.GUIDE_CONTENT[self.tab_names[self.current_tab]]
         
-        # Vẽ nội dung
+        # Vẽ văn bản cuộn được
         y_offset = content_rect.y - self.scroll_offset
         for line in current_content:
-            if y_offset + 20 > screen.get_height() - 50:
+            if y_offset + 20 > screen.get_height() - 70:
                 break
             
             if y_offset >= content_rect.y:
-                # Chọn màu và font dựa trên nội dung
-                if line.startswith("【"):
-                    text = FONT_STATUS.render(line, True, COLOR_BLUE)
-                elif line.startswith("•") or line.startswith("✓") or line.startswith("✗"):
-                    text = FONT_SMALL.render(line, True, COLOR_TEXT_DARK)
-                elif line.startswith("1.") or line.startswith("2.") or line.startswith("3.") or line.startswith("4.") or line.startswith("5."):
-                    text = FONT_STATUS.render(line, True, COLOR_BLUE)
+                if line.isupper() and len(line) > 3:
+                    text_surf = FONT_STATUS.render(line, True, COLOR_BLUE)
+                elif line.startswith("•") or line.startswith("✓") or line.startswith("  -"):
+                    text_surf = FONT_SMALL.render(line, True, COLOR_TEXT_DARK)
                 else:
-                    text = FONT_SMALL.render(line, True, COLOR_TEXT_DARK)
-                
-                screen.blit(text, (content_rect.x + 5, y_offset))
+                    text_surf = FONT_SMALL.render(line, True, COLOR_TEXT_DARK)
+                screen.blit(text_surf, (content_rect.x, y_offset))
             
-            y_offset += 18
+            y_offset += 20
         
-        # Vẽ thông tin điều khiển ở dưới
-        info_text = [
-            "◄ Mũi tên trái/phải hoặc A/D: Chuyển tab",
-            "Lên/xuống hoặc W/S: Cuộn nội dung",
-            "G: Đóng guide",
-        ]
-        
-        info_y = screen.get_height() - 65
-        for i, info in enumerate(info_text):
-            info_surface = FONT_MINI.render(info, True, COLOR_TEXT_LIGHT)
-            screen.blit(info_surface, (self.guide_rect.x + 10, info_y + (i * 18)))
+        # Gợi ý phím cuộn bên dưới
+        info_text = "◄ A / D hoặc Mũi tên trái/phải: Đổi tab  |  ▲ W / S hoặc Mũi tên lên/xuống: Cuộn trang  |  G: Đóng Hướng dẫn"
+        info_surf = FONT_MINI.render(info_text, True, COLOR_TEXT_LIGHT)
+        screen.blit(info_surf, (self.guide_rect.x + 20, self.guide_rect.y + self.guide_rect.height - 35))
         
     def handle_input(self, keys):
-        """Xử lý input khi guide đang mở"""
         if not self.is_visible:
             return
         
-        # Chuyển tab
         if keys[pygame.K_LEFT] or keys[pygame.K_a]:
             self.prev_tab()
             pygame.time.wait(200)
@@ -264,8 +224,29 @@ class GameGuide:
             self.next_tab()
             pygame.time.wait(200)
         
-        # Cuộn nội dung
         if keys[pygame.K_UP] or keys[pygame.K_w]:
-            self.scroll_offset = max(0, self.scroll_offset - 20)
+            self.scroll_offset = max(0, self.scroll_offset - 8)
         elif keys[pygame.K_DOWN] or keys[pygame.K_s]:
-            self.scroll_offset += 20
+            # Giới hạn cuộn tối đa dựa vào chiều dài nội dung
+            current_tab_name = self.tab_names[self.current_tab]
+            content_len = len(self.GUIDE_CONTENT[current_tab_name])
+            max_scroll = max(0, content_len * 20 - 330)
+            self.scroll_offset = min(max_scroll, self.scroll_offset + 8)
+
+    def handle_click(self, mouse_pos):
+        """Xử lý sự kiện click chuột vào các tab của cẩm nang"""
+        if not self.is_visible:
+            return False
+            
+        tab_y = self.guide_rect.y + 45
+        tab_height = 25
+        tab_width = self.guide_rect.width // len(self.tab_names)
+        
+        for i, tab_name in enumerate(self.tab_names):
+            tab_x = self.guide_rect.x + (i * tab_width)
+            tab_rect = pygame.Rect(tab_x, tab_y, tab_width, tab_height)
+            if tab_rect.collidepoint(mouse_pos):
+                self.current_tab = i
+                self.scroll_offset = 0
+                return True
+        return False

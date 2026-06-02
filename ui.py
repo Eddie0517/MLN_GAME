@@ -1,8 +1,8 @@
 import pygame
-from config import FONT_STATUS, FONT_SMALL, FONT_MINI, COLOR_ROAD, COLOR_GOLD, COLOR_RED, COLOR_TEXT_DARK, COLOR_TEXT_LIGHT, COLOR_BLUE, COLOR_GOLD_SOFT, COLOR_MINT_SOFT
+from config import FONT_STATUS, FONT_SMALL, FONT_MINI, FONT_LARGE, COLOR_ROAD, COLOR_GOLD, COLOR_RED, COLOR_TEXT_DARK, COLOR_TEXT_LIGHT, COLOR_BLUE, COLOR_GOLD_SOFT, COLOR_MINT_SOFT
 
 class UIEngine:
-    guide_button_rect = pygame.Rect(970, 25, 60, 30)
+    guide_button_rect = pygame.Rect(965, 15, 60, 30)
     
     @staticmethod
     def wrap_text(text, font, max_width):
@@ -27,45 +27,80 @@ class UIEngine:
     
     @staticmethod
     def draw_progress_bar(screen, x, y, width, height, value, max_value, label_text, bar_color):
-        lbl = FONT_SMALL.render(f"{label_text}: {value}%", True, COLOR_TEXT_DARK if y > 120 else (200, 200, 200))
+        lbl = FONT_SMALL.render(f"{label_text}: {value}%", True, COLOR_TEXT_DARK if y > 120 else (220, 220, 220))
         screen.blit(lbl, (x, y - 18))
         
         pygame.draw.rect(screen, COLOR_ROAD, (x, y, width, height), border_radius=3)
-        fill_width = int((value / max_value) * width)
+        if max_value > 0:
+            fill_width = int((value / max_value) * width)
+        else:
+            fill_width = 0
         fill_width = max(0, min(width, fill_width))
         pygame.draw.rect(screen, bar_color, (x, y, fill_width, height), border_radius=3)
 
     @staticmethod
     def draw_hud(screen, eco_state):
-        # 1. HIỂN THỊ HỆ TƯ TƯỞNG (Góc trái trên cùng)
-        lbl_ideo = FONT_STATUS.render(f"Hệ Tư Tưởng: {eco_state.current_ideology}", True, COLOR_BLUE)
-        screen.blit(lbl_ideo, (25, 25))
-
-        # 2. VẼ CÁC THANH TIẾN TRÌNH PHE PHÁI (Căn giữa Top Bar)
-        UIEngine.draw_progress_bar(screen, 380, 25, 140, 12, eco_state.worker_support, 100, "Giai cấp Công nhân", (0, 200, 255))
-        UIEngine.draw_progress_bar(screen, 380, 65, 140, 12, eco_state.capitalist_support, 100, "Giới Chủ Tư Bản", (255, 100, 100))
-
-        # 3. SẮP XẾP LẠI NGÂN SÁCH & NĂNG SUẤT (Dùng màu dịu mắt mới, thẳng hàng góc phải)
         import config
-        lbl_money = FONT_STATUS.render(f"Ngân sách: {eco_state.gold} Vàng", True, config.COLOR_GOLD_SOFT)
-        lbl_income = FONT_STATUS.render(f"Năng suất: +{eco_state.income}/năm", True, config.COLOR_MINT_SOFT)
-        screen.blit(lbl_money, (760, 25))
-        screen.blit(lbl_income, (760, 60))
+        # 1. Chọn màu sắc chủ đề dựa theo chương
+        ch_colors = {
+            1: config.COLOR_CH1,
+            2: config.COLOR_CH2,
+            3: config.COLOR_CH3,
+            4: config.COLOR_CH4,
+            5: config.COLOR_CH5
+        }
+        theme_color = ch_colors.get(eco_state.tech_level, config.COLOR_GOLD)
         
-        # Phần vẽ Bản tin đã được di dời sang Layer 2 của main.py để tối ưu kiến trúc đồ họa
-    
+        # Vẽ thanh màu mỏng trên đỉnh
+        pygame.draw.rect(screen, theme_color, (0, 0, screen.get_width(), 8))
+        
+        # Hiển thị chương hiện tại (Hàng 1)
+        lbl_ch = FONT_LARGE.render(f"CHƯƠNG {eco_state.tech_level}: {eco_state.get_chapter_name().upper()}", True, COLOR_GOLD_SOFT)
+        screen.blit(lbl_ch, (25, 18))
+        
+        # Dòng phụ mô tả hệ tư tưởng (Hàng 2)
+        lbl_ideo = FONT_MINI.render(f"Hệ tư tưởng xã hội: {eco_state.current_ideology}", True, (180, 180, 180))
+        screen.blit(lbl_ideo, (25, 52))
+
+        # Hiển thị tài nguyên phụ tại hàng 2
+        if eco_state.tech_level == 1:
+            lbl_res = FONT_STATUS.render(f"Lương thực trữ: {eco_state.food} quả", True, config.COLOR_GOLD_SOFT)
+        elif eco_state.tech_level == 2:
+            lbl_res = FONT_STATUS.render(f"Vàng: {eco_state.gold} | Quặng: {eco_state.ore} | Nô lệ: {eco_state.slaves}", True, config.COLOR_GOLD_SOFT)
+        elif eco_state.tech_level == 3:
+            lbl_res = FONT_STATUS.render(f"Ngân quỹ: {eco_state.gold} Vàng", True, config.COLOR_GOLD_SOFT)
+        elif eco_state.tech_level == 4:
+            lbl_res = FONT_STATUS.render(f"Quỹ Phúc Lợi: {eco_state.welfare_fund:,}đ", True, config.COLOR_MINT_SOFT)
+        elif eco_state.tech_level == 5:
+            lbl_res = FONT_STATUS.render(f"Năng lượng: {eco_state.clean_energy} | Tri thức: {eco_state.knowledge}", True, config.COLOR_MINT_SOFT)
+        
+        screen.blit(lbl_res, (420, 48))
+            
+        # Hiển thị Năm thứ tại Hàng 2
+        lbl_year = FONT_STATUS.render(f"Năm thứ: {eco_state.turn}", True, COLOR_TEXT_LIGHT)
+        screen.blit(lbl_year, (850, 48))
+
+        # 2. VẼ THANH TIẾN TRÌNH (Hàng 3)
+        unrest = eco_state.upheaval_tension
+        if eco_state.tech_level == 1:
+            # Chương 1: Hiện mức lửa sưởi ấm
+            UIEngine.draw_progress_bar(screen, 25, 96, 350, 12, eco_state.fire, 100, "Ngọn Lửa Sưởi Ấm", config.COLOR_GOLD)
+        elif eco_state.tech_level == 5:
+            # Chương 5: Hiện mức văn minh chiến thắng
+            UIEngine.draw_progress_bar(screen, 25, 96, 350, 12, eco_state.civilization_level, 100, "Tiến Trình Văn Minh Đỉnh Cao", config.COLOR_MINT)
+        else:
+            # Đời 2, 3, 4: Hiện phản kháng/bất ổn
+            label = "Độ Phản Kháng Nô Lệ" if eco_state.tech_level == 2 else ("Độ Bất Ổn Nông Dân" if eco_state.tech_level == 3 else "Độ Bất Ổn Xã Hội")
+            UIEngine.draw_progress_bar(screen, 25, 96, 350, 12, unrest, 100, label, config.COLOR_RED)
+        
     @staticmethod
     def draw_guide_button(screen):
         """Vẽ nút Guide ở góc phải trên cùng"""
         button_rect = UIEngine.guide_button_rect
-        
-        # Vẽ nền nút
         pygame.draw.rect(screen, COLOR_GOLD, button_rect, border_radius=5)
         pygame.draw.rect(screen, COLOR_RED, button_rect, 2, border_radius=5)
         
-        # Vẽ text nút
         button_text = FONT_SMALL.render("Guide", True, COLOR_TEXT_DARK)
         text_rect = button_text.get_rect(center=button_rect.center)
         screen.blit(button_text, text_rect)
-        
         return button_rect

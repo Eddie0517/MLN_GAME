@@ -20,6 +20,14 @@ COLOR_BLUE = (0, 150, 255)
 COLOR_GOLD_SOFT = (245, 210, 120)  # Vàng hoàng gia pastel nhạt
 COLOR_MINT_SOFT = (140, 230, 185)  # Xanh bạc hà pastel dịu mắt
 
+# Màu sắc chủ đề 5 Chương (Học thuyết Hình thái KT-XH)
+COLOR_CH1 = (139, 90, 43)      # Nâu đất - Công xã nguyên thủy
+COLOR_CH2 = (112, 128, 144)    # Xám xích sắt - Chiếm hữu nô lệ
+COLOR_CH3 = (184, 134, 11)     # Vàng đất cát - Phong kiến
+COLOR_CH4 = (204, 30, 30)      # Đỏ hồng - Xã hội chủ nghĩa
+COLOR_CH5 = (0, 180, 220)      # Xanh neon tươi sáng - Thế giới ngày mai (Solarpunk)
+
+
 pygame.font.init()
 # Font hỗ trợ tiếng Việt có dấu - dùng Tahoma hoặc font mặc định
 try:
