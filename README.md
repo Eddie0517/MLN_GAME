@@ -1,4 +1,4 @@
-# 🇻🇳 Kỷ Nguyên Tiến Hóa (The Age of Evolution)
+# Kỷ Nguyên Tiến Hóa (The Age of Evolution)
 ### *Mô Phỏng Biện Chứng Lịch Sử & Các Hình Thái Kinh Tế - Xã Hội*
 
 **Kỷ Nguyên Tiến Hóa** là một trò chơi mô phỏng phát triển xã hội được xây dựng bằng Python và Pygame. Người chơi sẽ vào vai Thị trưởng/Người dẫn dắt xã hội đưa loài người nguyên thủy vượt qua 5 hình thái kinh tế - xã hội lịch sử, cải tiến lực lượng sản xuất và thiết lập quan hệ sản xuất phù hợp để vươn tới đỉnh cao văn minh Solarpunk.
