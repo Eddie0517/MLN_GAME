@@ -24,3 +24,6 @@ Thumbs.db
 *.log
 saves/
 backup_old_files.zip
+build/
+game_web.zip
+
