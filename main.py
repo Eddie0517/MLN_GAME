@@ -17,80 +17,61 @@ NARRATIVES = {
         "title": "CHƯƠNG 1: BÌNH MINH CỦA BẦY NGƯỜI",
         "subtitle": "(Thời Kỳ Công Xã Nguyên Thủy)",
         "text": [
-            "Thế giới thuở sơ khai là một thực tại tàn khốc. Con người sinh ra tay trắng,",
-            "không móng vuốt, không sức mạnh thể chất vượt trội.",
-            "Giữa thiên nhiên vĩ đại và khắc nghiệt, kẻ đi săn đơn độc cũng chính là con mồi...",
-            "",
-            "Nhưng bước ngoặt đã đến khi họ phát hiện ra sức mạnh của sự gắn kết.",
-            "Sống thành nhóm, cùng làm, cùng chia sẻ — cuộc sống Săn bắt - Hái lượm hình thành.",
-            "Khi công cụ lao động chỉ là những hòn đá thô sơ, sự bình đẳng là cách duy nhất",
-            "để tất cả cùng sống sót qua mùa đông hoang sơ."
+            "Thuở khai hoang, con người sinh ra tay trắng, yếu ớt trước thiên nhiên khắc nghiệt.",
+            "Để sinh tồn, họ học cách dựa vào nhau, cùng săn bắt, hái lượm và chia sẻ mọi thứ.",
+            "Với những công cụ bằng đá thô sơ, sự bình đẳng và ngọn lửa ấm áp",
+            "chính là chìa khóa duy nhất giúp bộ tộc vượt qua những đêm đông băng giá."
         ]
     },
     2: {
         "title": "CHƯƠNG 2: XIỀNG XÍCH VÀ CƠ NGHIỆP",
         "subtitle": "(Thời Kỳ Chiếm Hữu Nô Lệ)",
         "text": [
-            "Khi công cụ sản xuất tiến bộ, con người tạo ra nhiều của cải hơn nhu cầu tối thiểu.",
-            "Sự dư thừa sinh ra lòng tham và ham muốn tích lũy tư hữu.",
-            "Kẻ mạnh chiếm đoạt tư liệu sản xuất, biến kẻ yếu thành công cụ lao động biết nói.",
-            "Xã hội phân hóa, xiềng xích của chế độ Chiếm hữu Nô lệ ra đời.",
-            "",
-            "Đó là một vết sẹo đau đớn trong lịch sử nhân loại,",
-            "nhưng lại chính là bệ phóng cơ bắp để xây dựng nên những kỳ quan đền đài vĩ đại đầu tiên."
+            "Của cải làm ra bắt đầu dư thừa, lòng tham tư hữu trỗi dậy.",
+            "Kẻ mạnh chiếm giữ tài sản và bắt đầu biến kẻ yếu thành công cụ lao động.",
+            "Xiềng xích nô lệ xuất hiện — một trang sử đau đớn nhưng lại là bệ phóng",
+            "bằng xương máu để dựng nên những kỳ quan đền đài vĩ đại đầu tiên."
         ]
     },
     3: {
         "title": "CHƯƠNG 3: ĐẤT ĐAI VÀ LÃNH ĐỊA",
         "subtitle": "(Thời Kỳ Phong Kiến)",
         "text": [
-            "Sự cưỡng bức thân xác nô lệ không thể tồn tại mãi khi hiệu suất chạm trần.",
-            "Với những công cụ bằng sắt nhọn bén, đất đai bỗng hóa thành vàng ròng.",
-            "Con người nhận ra: Thay vì trói buộc cơ thể nhau, việc làm chủ Đất đai",
-            "mới là quyền lực tối thượng. Chế độ phong kiến được thiết lập.",
-            "",
-            "Người lao động giờ đây được trao một chút tự do, có mảnh ruộng riêng để cày cấy,",
-            "tạo nên một động lực sản xuất mạnh mẽ chưa từng có trong lịch sử."
+            "Cưỡng bức thân xác nô lệ dần chạm trần hiệu suất. Khi công cụ sắt ra đời,",
+            "đất đai hóa vàng ròng. Chế độ phong kiến thiết lập quyền lực lên ruộng đất.",
+            "Người nông dân được trao một chút tự do và mảnh ruộng riêng,",
+            "giúp giải phóng sức sản xuất và thúc đẩy giao thương phát triển."
         ]
     },
     4: {
         "title": "CHƯƠNG 4: KỶ NGUYÊN HÀI HÒA VÀ CÔNG HỮU",
         "subtitle": "(Thời Kỳ Xã Hội Chủ Nghĩa)",
         "text": [
-            "Khi những cuộc khủng hoảng thừa của thời đại trước đẩy xã hội vào mâu thuẫn bất ổn,",
-            "nhân loại nhận ra: Lợi nhuận không nên tập trung vào tay một số ít người tư bản,",
-            "mà phải thuộc về toàn thể cộng đồng lao động công hữu.",
-            "",
-            "Một hình thái mới ra đời — nơi các nhà máy, hầm mỏ và tư liệu sản xuất lớn",
-            "thuộc sở hữu chung của toàn xã hội. Không còn cảnh người bóc lột người,",
-            "con người giờ đây làm việc theo năng lực và hưởng thành quả theo đúng công sức đóng góp."
+            "Bất bình đẳng và mâu thuẫn xã hội đẩy người lao động vào cảnh lầm than.",
+            "Nhân loại nhận ra của cải và nhà máy phải thuộc sở hữu chung của cộng đồng.",
+            "Xã hội mới hình thành — nơi không còn cảnh người bóc lột người,",
+            "tất cả cùng làm việc theo năng lực và hưởng thụ công bằng theo đóng góp."
         ]
     },
     5: {
         "title": "CHƯƠNG 5: THẾ GIỚI NGÀY MAI",
         "subtitle": "(Kỷ Nguyên Tri Thức & Tự Động Hóa)",
         "text": [
-            "Khi lực lượng sản xuất đạt đến đỉnh cao, máy móc và trí tuệ nhân tạo",
-            "đã gánh vác toàn bộ lao động chân tay nặng nhọc. Sự khan hiếm vật chất lùi vào quá khứ.",
-            "Con người không còn phải bán sức lao động để sinh tồn nữa,",
-            "mà tự do phát triển tư duy, nghệ thuật, triết học và khoa học sáng tạo.",
-            "",
-            "Tài sản lớn nhất giờ đây là Tri thức chung của nhân loại.",
-            "Nhân loại chính thức bước vào kỷ nguyên của sự tự do và tiến bộ tuyệt đối."
+            "Lực lượng sản xuất đạt đỉnh cao, máy móc và AI gánh vác mọi việc chân tay nặng nhọc.",
+            "Con người thoát khỏi nỗi lo sinh tồn, tự do sáng tạo nghệ thuật và khoa học.",
+            "Tài sản lớn nhất giờ đây là kho tàng tri thức chung của nhân loại,",
+            "mở ra kỷ nguyên của sự tự do, tiến bộ và nhân văn tuyệt đối."
         ]
     },
     6: {
         "title": "BIÊN NIÊN SỬ HOÀN THÀNH: ĐỈNH CAO VĂN MINH",
         "subtitle": "(Hành trình tiến hóa vĩ đại)",
         "text": [
-            "Lịch sử không phải là một đường thẳng tình cờ,",
-            "mà là một hành trình tiến hóa tất yếu của công cụ lao động và tư duy biện chứng.",
-            "Từ hòn đá thô sơ thuở hồng hoang đến những bộ não điện tử không gian,",
-            "con người đã tự viết nên số phận của mình qua chính hoạt động lao động thực tiễn.",
+            "Lịch sử không phải là ngẫu nhiên, mà là hành trình tiến hóa đầy tất yếu.",
+            "Từ hòn đá thô sơ đến công nghệ không gian, con người đã tự viết nên số phận.",
+            "Bánh xe lịch sử vẫn tiếp tục quay, vươn xa tới những thiên hà mới...",
             "",
-            "Và hành trình vươn ra các thiên hà xa xôi kia... chưa bao giờ dừng lại!",
-            "",
-            "CHÚC MỪNG! BẠN ĐÃ ĐƯA NHÂN LOẠI ĐẾN ĐỈNH CAO VĂN MINH."
+            "CHÚC MỪNG! BẠN ĐÃ ĐƯA NHÂN LOẠI CHẠM ĐẾN ĐỈNH CAO VĂN MINH."
         ]
     }
 }
